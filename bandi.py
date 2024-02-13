@@ -14,12 +14,14 @@ class Bandi():
             return result.json()['payload']['elencoBandi']
         return None
     def getDettaglioBando(self, idbando):
+        dettaglioBando = "https://www.acquistinretepa.it/publicservices/iniziativaservices/getDettaglioBandoRDO"
         dettaglioInformazioni = "https://www.acquistinretepa.it/publicservices/iniziativaservices/getDettaglioInformazioniRDO"
         docsIniziativa = "https://www.acquistinretepa.it/publicservices/iniziativaservices/getDocIniziativa"
         filters = {"idIniziativa":idbando}
         info = self.sess.post(dettaglioInformazioni, json=filters)
+        dettagli = self.sess.post(dettaglioBando, json=filters)
         docs = self.sess.post(docsIniziativa, json=filters)
-        return [info.json(), docs.json()]
+        return [info.json(), docs.json(), dettagli.json()]
     def getDocFile(self, iddocumento, formato):
         docsEndpoint = "https://www.acquistinretepa.it/eproc2/documentaleservices/getDocumento"
         filters = {"idDocumento":iddocumento}
@@ -28,7 +30,10 @@ class Bandi():
         file = self.sess.post(docsEndpoint, json=filters, cookies=getcookies)
         data = file.json()['payload']['file']
         binary_data = base64.b64decode(data)
-        with open(f'{iddocumento}.{formato}', 'wb') as f:
-            f.write(binary_data)
-            print(f"File salvato con successo... ID: {iddocumento}")
+        try:
+            with open(f'{iddocumento}.{formato}', 'wb') as f:
+                f.write(binary_data)
+            return 1
+        except:
+            return -1        
 
