@@ -7,8 +7,14 @@ class Bandi():
     def __init__(self):
       self.listaBandiEndpoint = "https://www.acquistinretepa.it/publicservices/vetrineservices/getAltriBandiRdoAperte"
       self.sess = requests.Session()
-    def getListaBandi(self):
-        filters = {"isArchive":False,"strumento":[{"label":"RDO APERTE","totale":18,"id":15}],"stato":[],"categoria":[{"label":"Informatica, elettronica, telecomunicazioni e macchine per l'ufficio","totale":48,"id":"2325bc4a2168634e"},{"label":"Servizi per il Funzionamento delle P.A.","totale":0,"id":"ccc667905df1eab6"}],"mostra":"","idt":"","dataPubblicazione":None,"tempo":{"dataDa":"","dataA":""},"paginazione":{"pagina":1,"itemPagina":999},"orderBy":{"campo":"dataPubblicazione","verso":"desc"}}
+    def getListaBandi(self, categoria):
+        if categoria != 'informatica' and categoria != 'servizipa':
+            return None
+        if categoria == 'informatica':
+            filters = {"isArchive":False,"strumento":[{"label":"RDO APERTE","totale":18,"id":15}],"stato":[],"categoria":[{"label":"Informatica, elettronica, telecomunicazioni e macchine per l'ufficio","totale":48,"id":"2325bc4a2168634e"}],"mostra":"","idt":"","dataPubblicazione":None,"tempo":{"dataDa":"","dataA":""},"paginazione":{"pagina":1,"itemPagina":999},"orderBy":{"campo":"dataPubblicazione","verso":"desc"}}
+        #{"label":"Servizi per il Funzionamento delle P.A.","totale":0,"id":"ccc667905df1eab6"}
+        else:
+            filters = {"isArchive":False,"strumento":[{"label":"RDO APERTE","totale":18,"id":15}],"stato":[],"categoria":[{"label":"Servizi per il Funzionamento delle P.A.","totale":0,"id":"ccc667905df1eab6"}],"mostra":"","idt":"","dataPubblicazione":None,"tempo":{"dataDa":"","dataA":""},"paginazione":{"pagina":1,"itemPagina":999},"orderBy":{"campo":"dataPubblicazione","verso":"desc"}}
         result = self.sess.post(self.listaBandiEndpoint, json=filters)
         if result.status_code == 200:
             return result.json()['payload']['elencoBandi']

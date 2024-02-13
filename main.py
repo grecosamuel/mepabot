@@ -42,7 +42,8 @@ def getBando(message):
                 with open(filename, 'rb') as fdata:
                     bot.send_document(document=fdata, chat_id=message.chat.id)
                 os.remove(filename)
-@bot.message_handler(commands=['elenco'])
+
+@bot.message_handler(commands=['informatica'])
 def send_elenco(message):
     limit = 10
     splitted = message.text.split(' ')
@@ -52,7 +53,25 @@ def send_elenco(message):
         except:
             bot.reply_to(message, "Sintassi del comando non valida.\nUtilizza /elenco N<intero>")
             return
-    lista = bandi.getListaBandi()[0:limit]
+    lista = bandi.getListaBandi('informatica')[0:limit]
+    for i in lista:
+        content = f"{i['titoloBando']}\n"
+        for c in i['categoria']:
+            content += f"({c})\n"
+        content += f"ID: {i['idBando']}"
+        bot.reply_to(message, content)
+
+@bot.message_handler(commands=['servizipa'])
+def send_elenco_pa(message):
+    limit = 10
+    splitted = message.text.split(' ')
+    if len(splitted) == 2:
+        try:
+            limit = int(splitted[1])
+        except:
+            bot.reply_to(message, "Sintassi del comando non valida.\nUtilizza /elenco N<intero>")
+            return
+    lista = bandi.getListaBandi('servizipa')[0:limit]
     for i in lista:
         content = f"{i['titoloBando']}\n"
         for c in i['categoria']:
