@@ -85,4 +85,5 @@ def send_welcome(message):
 
 
 bot.infinity_polling()
-bot.set_webhook("https://mepa-bot-web-service.onrender.com")
+bot.set_webhook("https://mepa-bot-web-service.onrender.com/bot" + BOT_TOKEN)
+bot.run_webhooks("https://mepa-bot-web-service.onrender.com/bot" + BOT_TOKEN)
