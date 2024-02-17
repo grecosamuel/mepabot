@@ -139,6 +139,11 @@ def send_welcome(message):
 print("Running bot with token: ", BOT_TOKEN)
 WEBHOOK_URL_BASE = "https://mepa-bot-web-service.onrender.com"
 WEBHOOK_URL_PATH = "/{}".format(BOT_TOKEN)
-bot.remove_webhook()
-bot.set_webhook(url=WEBHOOK_URL_BASE+WEBHOOK_URL_PATH)
+try:
+    bot.set_webhook(url=WEBHOOK_URL_BASE + WEBHOOK_URL_PATH)
+    print("Webhook impostato con successo")
+except Exception as e:
+    print(f"Errore durante l'impostazione del webhook: {e}")
+
+# Avviare il bot in modalità polling
 bot.polling(none_stop=True)
