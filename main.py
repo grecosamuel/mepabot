@@ -7,6 +7,19 @@ bot = telebot.TeleBot(BOT_TOKEN)
 
 bandi = Bandi()
 
+@bot.callback_query_handler(lambda query: "getdocs" in query.data)
+def process_callback_2(query):
+    idNum = query.data.split(" ")[1]
+    docs = bandi.getDocsList(idNum)
+    bot.reply_to(query.message, "Lista documenti per bando: " + idNum)
+    for f in docs['payload']['listaDocumentiIniziativa']:
+        filename = f"{f['idDocumento']}.{f['formato']}"
+        output = bandi.getDocFile(f['idDocumento'], f['formato'])
+        if output != -1:
+            with open(filename, 'rb') as fdata:
+                bot.send_document(document=fdata, chat_id=query.message.chat.id)
+            os.remove(filename)
+
 @bot.callback_query_handler(lambda query: "getinfo" in query.data)
 def process_callback_1(query):
     idNum = query.data.split(" ")[1]
@@ -95,6 +108,7 @@ def send_elenco(message):
         content += f"ID: {i['idBando']}"
         markup = telebot.types.InlineKeyboardMarkup()
         markup.add(telebot.types.InlineKeyboardButton(text="Visualizza dettagli", callback_data="getinfo " + i['idBando']))
+        markup.add(telebot.types.InlineKeyboardButton(text="Ottieni documenti", callback_data="getdocs " + i['idBando']))
         bot.reply_to(message, content, reply_markup=markup)
 
 @bot.message_handler(commands=['servizipa'])
@@ -115,6 +129,7 @@ def send_elenco_pa(message):
         content += f"ID: {i['idBando']}"
         markup = telebot.types.InlineKeyboardMarkup()
         markup.add(telebot.types.InlineKeyboardButton(text="Visualizza dettagli", callback_data="getinfo " + i['idBando']))
+        markup.add(telebot.types.InlineKeyboardButton(text="Ottieni documenti", callback_data="getdocs " + i['idBando']))
         bot.reply_to(message, content, reply_markup=markup)
         
 @bot.message_handler(commands=['start'])
