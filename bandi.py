@@ -22,12 +22,16 @@ class Bandi():
     def getDettaglioBando(self, idbando):
         dettaglioBando = "https://www.acquistinretepa.it/publicservices/iniziativaservices/getDettaglioBandoRDO"
         dettaglioInformazioni = "https://www.acquistinretepa.it/publicservices/iniziativaservices/getDettaglioInformazioniRDO"
-        docsIniziativa = "https://www.acquistinretepa.it/publicservices/iniziativaservices/getDocIniziativa"
         filters = {"idIniziativa":idbando}
         info = self.sess.post(dettaglioInformazioni, json=filters)
         dettagli = self.sess.post(dettaglioBando, json=filters)
+        return [info.json(), dettagli.json()]
+    def getDocsList(self, idbando):
+        docsIniziativa = "https://www.acquistinretepa.it/publicservices/iniziativaservices/getDocIniziativa"
+        filters = {"idIniziativa":idbando}
         docs = self.sess.post(docsIniziativa, json=filters)
-        return [info.json(), docs.json(), dettagli.json()]
+        return docs.json()
+
     def getDocFile(self, iddocumento, formato):
         docsEndpoint = "https://www.acquistinretepa.it/eproc2/documentaleservices/getDocumento"
         filters = {"idDocumento":iddocumento}

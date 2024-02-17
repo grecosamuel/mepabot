@@ -20,7 +20,7 @@ def getBando(message):
     if not idNum:
         bot.reply_to(message, "Errore durante la ricerca del bando")
     else:
-        info, docs, dettagli = bandi.getDettaglioBando(idNum)
+        info, dettagli = bandi.getDettaglioBando(idNum)
         content = ""
         dettagli  = dettagli['payload']['altriBandi']
         content += dettagli['titoloRDO'] + "\n\n"
@@ -35,6 +35,21 @@ def getBando(message):
             data = d['data'] / 1000
             content += datetime.utcfromtimestamp(data).strftime("%d-%m-%Y %H:%M:%S") + "\n"
         bot.reply_to(message, content)
+
+@bot.message_handler(commands=['docs'])
+def get_list_docs(message):
+    idNum = None
+    splitted = message.text.split(' ')
+    if len(splitted) == 2:
+        try:
+            idNum = splitted[1]
+        except:
+            bot.reply_to(message, "Sintassi del comando non valida.\nUtilizza /get ID_BANDO<stringa>")
+            return
+    if not idNum:
+        bot.reply_to(message, "Errore durante la ricerca del bando")
+    else:
+        docs = bandi.getDocsList(idNum)
         for f in docs['payload']['listaDocumentiIniziativa']:
             filename = f"{f['idDocumento']}.{f['formato']}"
             output = bandi.getDocFile(f['idDocumento'], f['formato'])
@@ -42,7 +57,6 @@ def getBando(message):
                 with open(filename, 'rb') as fdata:
                     bot.send_document(document=fdata, chat_id=message.chat.id)
                 os.remove(filename)
-
 @bot.message_handler(commands=['informatica'])
 def send_elenco(message):
     limit = 10
@@ -83,5 +97,5 @@ def send_elenco_pa(message):
 def send_welcome(message):
     bot.reply_to(message, "Ciao, benvenuto nel bot per i bandi MEPA, come posso aiutarti ?\nUsa /elenco N per ottenere N risultati dalla ricerca bandi.\nUsa /get ID per ottenere le informazioni dettagliate di un bando.")
 
-bot.remove_webhook()
+print("Running bot with token: ", BOT_TOKEN)
 bot.infinity_polling()
