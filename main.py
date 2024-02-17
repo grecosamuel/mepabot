@@ -138,7 +138,6 @@ def send_welcome(message):
 
 print("Running bot with token: ", BOT_TOKEN)
 try:
-    bot.delete_webhook()
     bot.remove_webhook()
     print("Webhook rimosso con successo")
 except Exception as e:
@@ -153,4 +152,4 @@ except Exception as e:
     print(f"Errore durante l'impostazione del webhook: {e}")
 
 # Avviare il bot in modalità polling
-bot.polling(none_stop=True)
+bot.infinity_polling()
