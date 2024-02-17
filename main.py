@@ -138,7 +138,7 @@ def send_welcome(message):
 
 print("Running bot with token: ", BOT_TOKEN)
 try:
-    bot.remove_webhook()
+    bot.delete_webhook()
     print("Webhook rimosso con successo")
 except Exception as e:
     print(f"Errore durante la rimozione del webhook: {e}")
