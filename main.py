@@ -139,14 +139,16 @@ def send_welcome(message):
 print("Running bot with token: ", BOT_TOKEN)
 try:
     bot.delete_webhook()
+    bot.remove_webhook()
     print("Webhook rimosso con successo")
 except Exception as e:
     print(f"Errore durante la rimozione del webhook: {e}")
 WEBHOOK_URL_BASE = "https://mepa-bot-web-service.onrender.com"
-WEBHOOK_URL_PATH = "/{}".format(BOT_TOKEN)
+WEBHOOK_URL_PATH = "/bot{}".format(BOT_TOKEN)
 try:
     bot.set_webhook(url=WEBHOOK_URL_BASE + WEBHOOK_URL_PATH)
     print("Webhook impostato con successo")
+    bot.run_webhooks(WEBHOOK_URL_BASE + WEBHOOK_URL_PATH, 3000)
 except Exception as e:
     print(f"Errore durante l'impostazione del webhook: {e}")
 
