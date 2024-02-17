@@ -7,6 +7,26 @@ bot = telebot.TeleBot(BOT_TOKEN)
 
 bandi = Bandi()
 
+@bot.callback_query_handler(lambda query: "getinfo" in query.data)
+def process_callback_1(query):
+    idNum = query.data.split(" ")[1]
+    info, dettagli = bandi.getDettaglioBando(idNum)
+    content = ""
+    dettagli  = dettagli['payload']['altriBandi']
+    content += dettagli['titoloRDO'] + "\n\n"
+    content += "Committente: " + dettagli['enteCommittente'] + "\n\n"
+    pubblicazione = dettagli['dataPubblicazione'] / 1000
+    content += datetime.utcfromtimestamp(pubblicazione).strftime("%d-%m-%Y %H:%M:%S") + " - "
+    scadenza = dettagli['dataScadenza'] / 1000
+    content += datetime.utcfromtimestamp(scadenza).strftime("%d-%m-%Y %H:%M:%S") + "\n\n"
+    info = info['payload']['dettaglioInformazioniRDO'][0]
+    for d in info['dateIniziativa']:
+        content += f"{d['titoloFase']}\n"
+        data = d['data'] / 1000
+        content += datetime.utcfromtimestamp(data).strftime("%d-%m-%Y %H:%M:%S") + "\n"
+    bot.reply_to(query.message, content)
+
+
 @bot.message_handler(commands=['get'])
 def getBando(message):
     idNum = None
@@ -73,7 +93,9 @@ def send_elenco(message):
         for c in i['categoria']:
             content += f"({c})\n"
         content += f"ID: {i['idBando']}"
-        bot.reply_to(message, content)
+        markup = telebot.types.InlineKeyboardMarkup()
+        markup.add(telebot.types.InlineKeyboardButton(text="Visualizza dettagli", callback_data="getinfo " + i['idBando']))
+        bot.reply_to(message, content, reply_markup=markup)
 
 @bot.message_handler(commands=['servizipa'])
 def send_elenco_pa(message):
@@ -91,7 +113,9 @@ def send_elenco_pa(message):
         for c in i['categoria']:
             content += f"({c})\n"
         content += f"ID: {i['idBando']}"
-        bot.reply_to(message, content)
+        markup = telebot.types.InlineKeyboardMarkup()
+        markup.add(telebot.types.InlineKeyboardButton(text="Visualizza dettagli", callback_data="getinfo " + i['idBando']))
+        bot.reply_to(message, content, reply_markup=markup)
         
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
