@@ -83,7 +83,5 @@ def send_elenco_pa(message):
 def send_welcome(message):
     bot.reply_to(message, "Ciao, benvenuto nel bot per i bandi MEPA, come posso aiutarti ?\nUsa /elenco N per ottenere N risultati dalla ricerca bandi.\nUsa /get ID per ottenere le informazioni dettagliate di un bando.")
 
-
+bot.remove_webhook()
 bot.infinity_polling()
-bot.set_webhook("https://mepa-bot-web-service.onrender.com/bot" + BOT_TOKEN)
-bot.run_webhooks("https://mepa-bot-web-service.onrender.com/bot" + BOT_TOKEN)
