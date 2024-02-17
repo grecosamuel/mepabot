@@ -137,6 +137,11 @@ def send_welcome(message):
     bot.reply_to(message, "Ciao, benvenuto nel bot per i bandi MEPA, come posso aiutarti ?\nUsa /elenco N per ottenere N risultati dalla ricerca bandi.\nUsa /get ID per ottenere le informazioni dettagliate di un bando.")
 
 print("Running bot with token: ", BOT_TOKEN)
+try:
+    bot.remove_webhook()
+    print("Webhook rimosso con successo")
+except Exception as e:
+    print(f"Errore durante la rimozione del webhook: {e}")
 WEBHOOK_URL_BASE = "https://mepa-bot-web-service.onrender.com"
 WEBHOOK_URL_PATH = "/{}".format(BOT_TOKEN)
 try:
