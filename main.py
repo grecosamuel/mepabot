@@ -137,5 +137,8 @@ def send_welcome(message):
     bot.reply_to(message, "Ciao, benvenuto nel bot per i bandi MEPA, come posso aiutarti ?\nUsa /elenco N per ottenere N risultati dalla ricerca bandi.\nUsa /get ID per ottenere le informazioni dettagliate di un bando.")
 
 print("Running bot with token: ", BOT_TOKEN)
-bot.set_webhook("https://mepa-bot-web-service.onrender.com/bot" + BOT_TOKEN)
-bot.run_webhooks("https://mepa-bot-web-service.onrender.com/bot" + BOT_TOKEN, 3000)
+WEBHOOK_URL_BASE = "https://mepa-bot-web-service.onrender.com"
+WEBHOOK_URL_PATH = "/{}".format(BOT_TOKEN)
+bot.remove_webhook()
+bot.set_webhook(url=WEBHOOK_URL_BASE+WEBHOOK_URL_PATH)
+bot.polling(none_stop=True)
