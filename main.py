@@ -141,5 +141,6 @@ print("Running bot with token: ", BOT_TOKEN)
 if (os.environ.get('LOCAL')):
     bot.infinity_polling()
 else:
-    bot.set_webhook(url="https://mepa-bot-web-service.onrender.com/")
+#    bot.set_webhook(url="https://mepa-bot-web-service.onrender.com/")
+    bot.delete_webhook()
     bot.polling()
