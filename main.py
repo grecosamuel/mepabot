@@ -138,4 +138,4 @@ def send_welcome(message):
 
 print("Running bot with token: ", BOT_TOKEN)
 
-bot.polling()
+bot.infinity_polling()
