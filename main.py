@@ -138,5 +138,8 @@ def send_welcome(message):
 
 print("Running bot with token: ", BOT_TOKEN)
 
-bot.set_webhook("https://mepa-bot-web-service.onrender.com/bot" + BOT_TOKEN)
-bot.run_webhooks("/bot" + BOT_TOKEN, 3000)
+if (os.environ.get('LOCAL')):
+    bot.infinity_polling()
+else:
+    bot.set_webhook("https://mepa-bot-web-service.onrender.com/bot" + BOT_TOKEN)
+    bot.run_webhooks("/bot" + BOT_TOKEN, 3000)
