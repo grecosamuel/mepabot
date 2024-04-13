@@ -8,6 +8,8 @@ async function getListaBandi(categoria, limit=999){
     let filters = {};
     if (categoria == 'informatica') {
         filters = {"isArchive":false,"strumento":[{"label":"RDO APERTE","totale":18,"id":15}],"stato":[],"categoria":[{"label":"Informatica, elettronica, telecomunicazioni e macchine per l'ufficio","totale":48,"id":"2325bc4a2168634e"}],"mostra":"","idt":"","dataPubblicazione":null,"tempo":{"dataDa":"","dataA":""},"paginazione":{"pagina":1,"itemPagina":limit},"orderBy":{"campo":"dataPubblicazione","verso":"desc"}}
+    } else if (categoria == 'immobili') {
+        filters = {"isArchive":false,"strumento":[{"label":"RDO APERTE","totale":18,"id":15}],"stato":[],"categoria":[{"label":"Gestione degli immobili","totale":10,"id":"151b0e813bb77a1a"}],"mostra":"","idt":"","dataPubblicazione":null,"tempo":{"dataDa":"","dataA":""},"paginazione":{"pagina":1,"itemPagina":limit},"orderBy":{"campo":"dataPubblicazione","verso":"desc"}};
     }
     else {
         filters = {"isArchive":false,"strumento":[{"label":"RDO APERTE","totale":18,"id":15}],"stato":[],"categoria":[{"label":"Servizi per il Funzionamento delle P.A.","totale":0,"id":"ccc667905df1eab6"}],"mostra":"","idt":"","dataPubblicazione":null,"tempo":{"dataDa":"","dataA":""},"paginazione":{"pagina":1,"itemPagina":limit},"orderBy":{"campo":"dataPubblicazione","verso":"desc"}}

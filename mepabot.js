@@ -52,6 +52,43 @@ bot.command("informatica", async context => {
     }
 });
 
+bot.command("immobili", async context => {
+    const textMessage = context.message.text;
+    const splitted = textMessage.split(" ");
+    if (splitted.length != 2) {
+        context.reply("Sintassi del comando errata...");
+    } else {
+        let limit = parseInt(splitted[1]);
+        if (isNaN(limit)) {
+            context.reply("Sintassi del comando errata...");
+        } else {
+            const list = await getListaBandi("immobili", limit);
+            list.forEach(bando => {
+                let content = bando.titoloBando + "\n";
+                bando.categoria.forEach(categoria => {
+                    content += categoria + "\n";
+                });
+                content += "ID: " + bando.idBando;
+                let markup = [
+                    [
+                        {
+                            text: "Visualizza dettagli",
+                            callback_data: `getinfo-${bando.idBando}`
+                        }
+                    ],
+                    [
+                        {
+                            text: "Ottieni documenti",
+                            callback_data: `getdocs-${bando.idBando}`
+                        }
+                    ]
+                ];
+                context.reply(content, { reply_markup: { inline_keyboard: markup }});
+            });
+        }
+    }
+});
+
 bot.command("servizipa", async context => {
     const textmessage = context.message.text;
     const splitted = textmessage.split(" ");
